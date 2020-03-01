@@ -1,5 +1,8 @@
 package view;
 
+import handlers.CalculateDegreesHandler;
+import handlers.CalculateRadiansHandler;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,14 +22,55 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainWindow {
+    private JFrame mainFrame;
+    private JLabel degreeLabel;
+    private JLabel radiansLabel;
+    private JLabel angleLabel;
+    private JTextField degreeField;
 
-    private JFrame frame;
+
+    private JTextField radiansField;
+    private JButton convertDegreesToRadiansButton;
+    private JButton convertRadiansToDegreesButton;
 
 
     public MainWindow() {
-        initFrame();
+        init();
+    }
 
-        Container container = frame.getContentPane();
+    public void exec() {
+    EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                createView();
+                mainFrame.setVisible(true);
+            }
+        });
+    }
+
+    private void init() {
+        mainFrame = new JFrame("Main Window");
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setSize(400, 230);
+        mainFrame.setMinimumSize(new Dimension(400, 200));
+//        frame.setResizable(false);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        mainFrame.setLocation(dim.width / 2 - 200, dim.height / 2 - 150);
+
+        degreeLabel = new JLabel("Градусы");
+        radiansLabel = new JLabel("Радианы");
+        angleLabel = new JLabel("Угол");
+        degreeField = new JTextField();
+        radiansField = new JTextField();
+        convertDegreesToRadiansButton = new JButton("Посчитать радианы");
+        convertRadiansToDegreesButton = new JButton("Посчитать градусы");
+
+        convertDegreesToRadiansButton.addActionListener(new CalculateRadiansHandler(this));
+        convertRadiansToDegreesButton.addActionListener(new CalculateDegreesHandler(this));
+    }
+
+    private void createView() {
+        Container container = mainFrame.getContentPane();
         GridBagLayout gridBagLayout = new GridBagLayout();
         container.setLayout(gridBagLayout);
         container.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -39,8 +83,7 @@ public class MainWindow {
         constraints.weighty = 0.3;
         constraints.anchor = GridBagConstraints.LAST_LINE_START;
         constraints.insets = new Insets(0, 40, 5, 0);
-        JLabel degreeLabel = new JLabel("Градусы");
-        container.add(degreeLabel, constraints);
+        container.add(this.degreeLabel, constraints);
 
         constraints.gridx = 1;
         constraints.gridy = 0;
@@ -49,8 +92,7 @@ public class MainWindow {
         constraints.anchor = GridBagConstraints.LAST_LINE_START;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(0, 10, 5, 40);
-        JTextField degreeField = new JTextField();
-        container.add(degreeField, constraints);
+        container.add(this.degreeField, constraints);
 
 
         constraints.gridx = 0;
@@ -59,9 +101,8 @@ public class MainWindow {
         constraints.weighty = 0.1;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.fill = GridBagConstraints.NONE;
-        JLabel radiansLabel = new JLabel("Радианы");
         constraints.insets = new Insets(15, 40, 5, 0);
-        container.add(radiansLabel, constraints);
+        container.add(this.radiansLabel, constraints);
 //
         constraints.gridx = 1;
         constraints.gridy = 1;
@@ -70,8 +111,7 @@ public class MainWindow {
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(15, 10, 5, 40);
-        JTextField radiansField = new JTextField();
-        container.add(radiansField, constraints);
+        container.add(this.radiansField, constraints);
 
 
         constraints.gridx = 0;
@@ -82,8 +122,7 @@ public class MainWindow {
         constraints.anchor = GridBagConstraints.LINE_START;
         constraints.fill = GridBagConstraints.NONE;
         constraints.insets = new Insets(0, 40, 0, 0);
-        JLabel angleLabel = new JLabel("Угол");
-        container.add(angleLabel, constraints);
+        container.add(this.angleLabel, constraints);
 
 
         constraints.gridx = 0;
@@ -97,92 +136,32 @@ public class MainWindow {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
-        JButton convertDegreesToRadiansButton = new JButton("Посчитать радианы");
-        JButton convertRadiansToDegreesButton = new JButton("Посчитать градусы");
-        buttonPanel.add(convertRadiansToDegreesButton);
-        buttonPanel.add(convertDegreesToRadiansButton);
+        buttonPanel.add(this.convertRadiansToDegreesButton);
+        buttonPanel.add(this.convertDegreesToRadiansButton);
         container.add(buttonPanel, constraints);
-
-        convertDegreesToRadiansButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                double degrees;
-                try {
-                    degrees = Double.valueOf(degreeField.getText());
-                } catch (Exception exc) {
-                    angleLabel.setText("Ошибка ввода");
-                    return;
-                }
-                double radians = Math.toRadians(degrees);
-                radiansField.setText(String.valueOf(radians));
-
-                if (Math.abs(degrees) > 90) {
-                    angleLabel.setText("Тупой угол");
-                } else if (Math.abs(degrees) == 90) {
-                    angleLabel.setText("Угол прямой");
-                } else {
-                    angleLabel.setText("Угол острый");
-                }
-            }
-        });
-
-        convertRadiansToDegreesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                double radians;
-                try {
-                    radians = Double.valueOf(radiansField.getText());
-                } catch (Exception exc) {
-                    angleLabel.setText("Ошибка ввода");
-                    return;
-                }
-                double degrees = Math.toDegrees(radians);
-                degreeField.setText(String.valueOf(degrees));
-
-                if (Math.abs(degrees) > 90) {
-                    angleLabel.setText("Тупой угол");
-                } else if (Math.abs(degrees) == 90) {
-                    angleLabel.setText("Угол прямой");
-                } else {
-                    angleLabel.setText("Угол острый");
-                }
-            }
-        });
-//
-//        constraints.gridx = 1;
-//        constraints.gridy = 3;
-//        constraints.weightx = 1;
-//        constraints.weighty = 1;
-//        constraints.gridwidth = 1;
-//        constraints.anchor = GridBagConstraints.WEST;
-//        constraints.fill = GridBagConstraints.NONE;
-//        JButton convertRadiansToDegreesButton = new JButton("Посчитать радианы");
-//        container.add(convertRadiansToDegreesButton);
     }
 
-    private void addAButton(String text, Container container) {
-        JButton button = new JButton(text);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        container.add(button);
+    public JLabel getAngleLabel() {
+        return angleLabel;
     }
 
-    public void show() {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                frame.setVisible(true);
-            }
-        });
+    public void setAngleLabel(JLabel angleLabel) {
+        this.angleLabel = angleLabel;
     }
 
-    private void initFrame() {
-        frame = new JFrame("Main Window");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 230);
-        frame.setMinimumSize(new Dimension(400, 200));
-//        frame.setResizable(false);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width / 2 - 200, dim.height / 2 - 150);
+    public JTextField getDegreeField() {
+        return degreeField;
     }
 
+    public void setDegreeField(JTextField degreeField) {
+        this.degreeField = degreeField;
+    }
+
+    public JTextField getRadiansField() {
+        return radiansField;
+    }
+
+    public void setRadiansField(JTextField radiansField) {
+        this.radiansField = radiansField;
+    }
 }
