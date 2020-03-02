@@ -1,14 +1,13 @@
-package view;
+package ru.com.java.view;
 
-import handlers.CalculateDegreesHandler;
-import handlers.CalculateRadiansHandler;
+import ru.com.java.handlers.CalculateDegreesHandler;
+import ru.com.java.handlers.CalculateRadiansHandler;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -18,8 +17,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class MainWindow {
     private JFrame mainFrame;
@@ -27,8 +25,6 @@ public class MainWindow {
     private JLabel radiansLabel;
     private JLabel angleLabel;
     private JTextField degreeField;
-
-
     private JTextField radiansField;
     private JButton convertDegreesToRadiansButton;
     private JButton convertRadiansToDegreesButton;
@@ -38,22 +34,11 @@ public class MainWindow {
         init();
     }
 
-    public void exec() {
-    EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                createView();
-                mainFrame.setVisible(true);
-            }
-        });
-    }
-
     private void init() {
         mainFrame = new JFrame("Main Window");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(400, 230);
         mainFrame.setMinimumSize(new Dimension(400, 200));
-//        frame.setResizable(false);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         mainFrame.setLocation(dim.width / 2 - 200, dim.height / 2 - 150);
 
@@ -67,6 +52,16 @@ public class MainWindow {
 
         convertDegreesToRadiansButton.addActionListener(new CalculateRadiansHandler(this));
         convertRadiansToDegreesButton.addActionListener(new CalculateDegreesHandler(this));
+    }
+
+    public void exec() {
+    EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                createView();
+                mainFrame.setVisible(true);
+            }
+        });
     }
 
     private void createView() {
@@ -103,7 +98,7 @@ public class MainWindow {
         constraints.fill = GridBagConstraints.NONE;
         constraints.insets = new Insets(15, 40, 5, 0);
         container.add(this.radiansLabel, constraints);
-//
+
         constraints.gridx = 1;
         constraints.gridy = 1;
         constraints.weighty = 0.1;
@@ -145,23 +140,11 @@ public class MainWindow {
         return angleLabel;
     }
 
-    public void setAngleLabel(JLabel angleLabel) {
-        this.angleLabel = angleLabel;
-    }
-
     public JTextField getDegreeField() {
         return degreeField;
     }
 
-    public void setDegreeField(JTextField degreeField) {
-        this.degreeField = degreeField;
-    }
-
     public JTextField getRadiansField() {
         return radiansField;
-    }
-
-    public void setRadiansField(JTextField radiansField) {
-        this.radiansField = radiansField;
     }
 }

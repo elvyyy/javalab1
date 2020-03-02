@@ -1,7 +1,7 @@
-package handlers;
+package ru.com.java.handlers;
 
-import models.Angle;
-import view.MainWindow;
+import ru.com.java.models.Angle;
+import ru.com.java.view.MainWindow;
 
 public class AngleTypeController {
     MainWindow mainWindow;
@@ -15,14 +15,17 @@ public class AngleTypeController {
         switch (cornerType) {
             case Angle.OBTUSE_CORNER: {
                 mainWindow.getAngleLabel().setText("Тупой угол");
+                break;
             }
 
             case  Angle.RIGHT_ANGLE: {
                 mainWindow.getAngleLabel().setText("Угол прямой");
+                break;
             }
 
             case Angle.SHARP_CORNER: {
                 mainWindow.getAngleLabel().setText("Угол острый");
+                break;
             }
         }
     }

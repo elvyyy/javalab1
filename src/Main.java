@@ -1,4 +1,4 @@
-import view.MainWindow;
+import ru.com.java.view.MainWindow;
 
 public class Main   {
 

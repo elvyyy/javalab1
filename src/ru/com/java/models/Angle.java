@@ -1,4 +1,4 @@
-package models;
+package ru.com.java.models;
 
 public class Angle {
     final public static int RIGHT_ANGLE = 0;

@@ -1,29 +1,28 @@
-package handlers;
+package ru.com.java.handlers;
 
-import models.Angle;
-import view.MainWindow;
+import ru.com.java.view.MainWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CalculateDegreesHandler implements ActionListener {
-    MainWindow mainWindow;
+public class CalculateRadiansHandler implements ActionListener {
+    private MainWindow mainWindow;
 
-    public CalculateDegreesHandler(MainWindow mainWindow) {
+    public CalculateRadiansHandler(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        double radians;
+        double degrees;
         try {
-            radians = Double.valueOf(mainWindow.getRadiansField().getText());
+            degrees = Double.valueOf(mainWindow.getDegreeField().getText());
         } catch (Exception exc) {
             mainWindow.getAngleLabel().setText("Ошибка ввода");
             return;
         }
-        double degrees = Math.toDegrees(radians);
-        mainWindow.getDegreeField().setText(String.valueOf(degrees));
+        double radians = Math.toRadians(degrees);
+        mainWindow.getRadiansField().setText(String.valueOf(radians));
 
         AngleTypeController angleTypeController = new AngleTypeController(mainWindow);
         angleTypeController.setAngleType(degrees);
