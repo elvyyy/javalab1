@@ -1,5 +1,6 @@
 package handlers;
 
+import models.Angle;
 import view.MainWindow;
 
 import java.awt.event.ActionEvent;
@@ -24,12 +25,7 @@ public class CalculateRadiansHandler implements ActionListener {
         double radians = Math.toRadians(degrees);
         mainWindow.getRadiansField().setText(String.valueOf(radians));
 
-        if (Math.abs(degrees) > 90) {
-            mainWindow.getAngleLabel().setText("Тупой угол");
-        } else if (Math.abs(degrees) == 90) {
-            mainWindow.getAngleLabel().setText("Угол прямой");
-        } else {
-            mainWindow.getAngleLabel().setText("Угол острый");
-        }
+        AngleTypeController angleTypeController = new AngleTypeController(mainWindow);
+        angleTypeController.setAngleType(degrees);
     }
 }
